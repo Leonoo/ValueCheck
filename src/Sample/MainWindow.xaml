@@ -1,0 +1,47 @@
+﻿<Window x:Class="Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:cvconverter="clr-namespace:ValueCheck.Converter;assembly=ValueCheck"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="169" Width="350" x:Name="Sample">
+    <Window.Resources>
+        <cvconverter:ValueCheckHeigthConverter x:Key="ValueCheckHeigthConverter" />
+        <cvconverter:ValueCheckVisibilityConverter x:Key="ValueCheckVisibilityConverter" />
+    </Window.Resources>
+    <Grid>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
+                    <Label Height="25" Width="80" FontWeight="Normal" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0" >QMin :</Label>
+                    <TextBox Height="25" Margin="4,0,0,0" FontWeight="Normal" Width="200" HorizontalAlignment="Left" 
+                        Text="{Binding Path=SValue1.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" />
+                    <Label Height="25" Margin="4,0,0,0" FontWeight="Normal" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="0" >[m³/h]</Label>
+                </StackPanel>
+                <ContentPresenter Height="{Binding Path=DataContext.SValue1.Error, ElementName=Sample, Converter={StaticResource ValueCheckHeigthConverter}}" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top" Content="QMin &lt; QNom"
+                                  TextBlock.Foreground="Red" Visibility="{Binding Path=DataContext.SValue1.Error, ElementName=Sample, Converter={StaticResource ValueCheckVisibilityConverter}}"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
+                    <Label Height="25" Width="80" FontWeight="Normal" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0" >QNom :</Label>
+                    <TextBox Height="25" Margin="4,0,0,0" FontWeight="Normal" Width="200" HorizontalAlignment="Left" 
+                        Text="{Binding Path=SValue2.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" />
+                    <Label Height="25" Margin="4,0,0,0" FontWeight="Normal" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="0" >[m³/h]</Label>
+                </StackPanel>
+                <ContentPresenter Height="{Binding Path=DataContext.SValue2.Error, ElementName=Sample, Converter={StaticResource ValueCheckHeigthConverter}}" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top" Content="QNom > QNom and QNom &lt;= QMax"
+                                  TextBlock.Foreground="Red" Visibility="{Binding Path=DataContext.SValue2.Error, ElementName=Sample, Converter={StaticResource ValueCheckVisibilityConverter}}"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
+                    <Label Height="25" Width="80" FontWeight="Normal" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0" >QMax :</Label>
+                    <TextBox Height="25" Margin="4,0,0,0" FontWeight="Normal" Width="200" HorizontalAlignment="Left" 
+                        Text="{Binding Path=SValue3.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" />
+                    <Label Height="25" Margin="4,0,0,0" FontWeight="Normal" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="0" >[m³/h]</Label>
+                </StackPanel>
+                <ContentPresenter Height="{Binding Path=DataContext.SValue3.Error, ElementName=Sample, Converter={StaticResource ValueCheckHeigthConverter}}" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top" Content="QMax >= QNom"
+                                  TextBlock.Foreground="Red" Visibility="{Binding Path=DataContext.SValue3.Error, ElementName=Sample, Converter={StaticResource ValueCheckVisibilityConverter}}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
