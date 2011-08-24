@@ -8,6 +8,8 @@ namespace ValueCheck
 {
     public class ValueCheck<T> : INotifyPropertyChanged
     {
+        public delegate void ValueChangedDelegate(T value);
+
         private bool m_OK;
 
         public bool OK
@@ -50,6 +52,10 @@ namespace ValueCheck
                     Check();
                     Check2();
                     OnPropertyChanged("Value");
+                    if (ValueChanged != null)
+                    {
+                        ValueChanged(value);
+                    }
                 }
             }
         }
@@ -102,5 +108,7 @@ namespace ValueCheck
         }
 
         #endregion // INotifyPropertyChanged Members
+
+        public event ValueChangedDelegate ValueChanged;
     }
 }
