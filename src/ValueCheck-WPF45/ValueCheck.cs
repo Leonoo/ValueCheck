@@ -7,9 +7,10 @@ using System.Text;
 
 namespace ValueCheck
 {
-    public class ValueCheck<T> : INotifyPropertyChanged, IDataErrorInfo
+    public class ValueCheck<T> : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         public delegate void ValueChangedDelegate(T value);
+        public event ValueChangedDelegate ValueChanged;
 
         private bool m_OK;
 
@@ -52,6 +53,7 @@ namespace ValueCheck
                     m_Value = value;
                     Check();
                     Check2();
+                    OnPropertyChanged("Value");
                     if (ValueChanged != null)
                     {
                         ValueChanged(value);
@@ -82,10 +84,15 @@ namespace ValueCheck
         {
             if (m_Check != null && Value != null)
             {
-                Error = !m_Check(this);
+                bool error = !m_Check(this);
+
+                if (error != Error)
+                {
+                    Error = error;
+                    OnErrorsChanged("Value");
+                }
             }
-            OnPropertyChanged("Value");
-        }
+         }
 
         private void Check2()
         {
@@ -118,27 +125,37 @@ namespace ValueCheck
 
         #endregion // INotifyPropertyChanged Members
 
-        public event ValueChangedDelegate ValueChanged;
-
-        string IDataErrorInfo.Error
+        #region INotifyDataErrorInfo Members
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        protected virtual void OnErrorsChanged(string propertyName)
         {
-            get { 
-                throw new NotImplementedException(); 
-            }
-        }
-
-        string IDataErrorInfo.this[string columnName]
-        {
-            get
+            EventHandler<DataErrorsChangedEventArgs> handler = this.ErrorsChanged;
+            if (handler != null)
             {
-                string result = string.Empty;
-                if (Error && columnName == "Value" && m_DataErrorInfoString != null)
-                {
-                    result = m_DataErrorInfoString();
-                }
-
-                return result;
+                var e = new DataErrorsChangedEventArgs(propertyName);
+                handler(this, e);
             }
         }
+
+        public System.Collections.IEnumerable GetErrors(string propertyName)
+        {
+            var errorList = new List<string>();
+
+            if (Error && propertyName == "Value" && m_DataErrorInfoString != null)
+            {
+                errorList.Add(m_DataErrorInfoString());
+            }
+
+            return errorList;
+        }
+
+        public bool HasErrors
+        {
+            get 
+            { 
+                return Error; 
+            }
+        }
+        #endregion
     }
 }

@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="169" Width="350" x:Name="Sample">
     <Window.Resources>
-        <Style TargetType="{x:Type TextBox}">
+        <Style TargetType="{x:Type TextBox}" x:Key="ErrorBox">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
@@ -24,9 +24,9 @@
                         Text="{Binding Path=SValue1.Value, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" VerticalAlignment="Top" />
                     <Label Height="25" Margin="4,0,0,0" FontWeight="Normal" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="0" >[m³/h]</Label>
                 </StackPanel>
-                <ContentPresenter 
-                                  HorizontalAlignment="Left" VerticalAlignment="Top" Content="QMin &lt; QNom"
-                                  TextBlock.Foreground="Red" Visibility="{Binding Path=DataContext.SValue1.Error, ElementName=Sample, Converter={StaticResource ValueCheckVisibilityConverter}}"/>
+                <TextBlock Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding Path=DataContext.SValue1.Error, ElementName=Sample, Converter={StaticResource ValueCheckVisibilityConverter}}">
+                    QMin &lt; QNom
+                </TextBlock>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
@@ -46,9 +46,9 @@
                         Text="{Binding Path=SValue3.Value, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" VerticalAlignment="Top" />
                     <Label Height="25" Margin="4,0,0,0" FontWeight="Normal" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="0" >[m³/h]</Label>
                 </StackPanel>
-                <ContentPresenter 
-                                  HorizontalAlignment="Left" VerticalAlignment="Top" Content="QMax >= QNom"
-                                  TextBlock.Foreground="Red" Visibility="{Binding Path=DataContext.SValue3.Error, ElementName=Sample, Converter={StaticResource ValueCheckVisibilityConverter}}"/>
+                <TextBlock Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding Path=DataContext.SValue3.Error, ElementName=Sample, Converter={StaticResource ValueCheckVisibilityConverter}}">
+                    QMax >= QNom
+                </TextBlock>
             </StackPanel>
         </StackPanel>
     </Grid>
